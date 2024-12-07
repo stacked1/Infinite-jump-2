@@ -1,0 +1,39 @@
+local Rayfield = require(game.ReplicatedStorage:WaitForChild("Rayfield"))
+
+local player = game.Players.LocalPlayer
+local userInputService = game:GetService("UserInputService")
+
+local jumpEnabled = true
+
+local function onJumpRequest()
+    if jumpEnabled then
+        player.Character:FindFirstChildOfClass("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping)
+    end
+end
+
+userInputService.JumpRequest:Connect(onJumpRequest)
+
+local Window = Rayfield:CreateWindow({
+    Name = "Infinite Jump",
+    LoadingTitle = "Loading...",
+    LoadingSubtitle = "Please wait...",
+    ConfigurationSaving = {
+        Enabled = false,
+    },
+})
+
+local Page = Window:CreatePage({
+    Name = "Settings",
+    Icon = "rbxassetid://123456789",
+})
+
+Page:CreateToggle({
+    Name = "Enable Infinite Jump",
+    CurrentValue = jumpEnabled,
+    Flag = "infiniteJumpToggle",
+    Callback = function(Value)
+        jumpEnabled = Value
+    end,
+})
+
+Page:SetToggle("infiniteJumpToggle", jumpEnabled)
